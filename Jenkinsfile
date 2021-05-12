@@ -60,9 +60,9 @@ pipeline {
     stage ('Deploy Artifacts') {
             steps {
                 rtMavenRun (
-                    tool: "maven", // Tool name from Jenkins configuration
+                    tool: maven, // Tool name from Jenkins configuration
                     pom: 'pom.xml',
-                    goals: 'clean install',
+                    goals: 'clean deploy',
                     deployerId: "MAVEN_DEPLOYER",
                     resolverId: "MAVEN_RESOLVER"
                 )
