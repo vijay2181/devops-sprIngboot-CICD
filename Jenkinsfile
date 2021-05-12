@@ -27,12 +27,12 @@ pipeline {
         steps {
               withSonarQubeEnv('sonar') {
                 
-				dir('java-source'){
+				
                  sh 'mvn -U clean install sonar:sonar'
                 }
 				
               }
-            }
+            
       }
 
     stage ('Artifactory configuration') {
