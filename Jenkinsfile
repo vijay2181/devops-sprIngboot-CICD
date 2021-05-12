@@ -46,6 +46,7 @@ pipeline {
 		    rtMavenResolver (
                     id: 'MAVEN_RESOLVER',
                     serverId: 'jfrog-1',
+	            releaseRepo: 'libs-release',
                     snapshotRepo: 'libs-snapshot'
 		    
                 
@@ -63,11 +64,11 @@ pipeline {
     stage ('Deploy Artifacts') {
             steps {
                 rtMavenRun (
-                    tool: maven, // Tool name from Jenkins configuration
+                    tool: 'maven', // Tool name from Jenkins configuration
                     pom: 'pom.xml',
                     goals: 'clean deploy',
-                    deployerId: "MAVEN_DEPLOYER",
-                    resolverId: "MAVEN_RESOLVER"
+                    deployerId: 'MAVEN_DEPLOYER',
+                    resolverId: 'MAVEN_RESOLVER'
                 )
          }
     }
