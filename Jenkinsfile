@@ -38,21 +38,24 @@ pipeline {
     stage ('Artifactory configuration') {
             steps {
                 rtServer (
-                    id: "jfrog",
-                    url: "http://3.235.141.37:8081/artifactory",
-                    credentialsId: "jfrog"
+                    id: 'jfrog',
+                    url: 'http://3.235.141.37:8081/artifactory',
+                    credentialsId: 'jfrog'
                 )
-
-                rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER",
-                    serverId: "jfrog",
-                    snapshotRepo: "libs-snapshot-local"
+                
+		    rtMavenResolver (
+                    id: 'MAVEN_RESOLVER',
+                    serverId: 'jfrog',
+                    snapshotRepo: 'libs-snapshot'
+		    
+                
                 )
-
-                rtMavenResolver (
-                    id: "MAVEN_RESOLVER",
-                    serverId: "jfrog",
-                    snapshotRepo: "libs-snapshot"
+        
+		    rtMavenDeployer (
+                    id: 'MAVEN_DEPLOYER',
+                    serverId: 'jfrog',
+                    snapshotRepo: 'libs-snapshot-local'
+		   
                 )
             }
     }
