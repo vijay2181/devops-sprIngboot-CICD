@@ -1,0 +1,46 @@
+#Create Custom Container Image
+#Push to DockerHub Registry
+---
+- hosts: localhost
+  become: true
+  vars_files:
+    - pwd1.yml
+    - pwd2.yml  
+  tasks:
+  - name: pull .war file
+    get_url:
+      url: http://3.235.141.37:8081/artifactory/libs-snapshot-local/com/example/springboot-project/0.0.1-SNAPSHOT/springboot-project-0.0.1-20210511.053454-3.war
+      dest: /root/admin
+      url_username: admin
+      url_password: "{{ password1 }}"
+
+  - name: Rename .war Artifact
+    command: mv /root/admin/springboot-project-0.0.1-20210511.053454-3.war springboot.war
+  - name: Pull Tomcat  Container Image
+    docker_image:
+      name: tomcat:latest
+      source: pull
+
+  - name: Build image and with build args
+    docker_image:
+     name: springboot
+     build:
+       path: /root/admin
+       pull: no
+       args:
+         listen_port: 8080
+     source: build
+
+  - name: Log into DockerHub
+    docker_login:
+      username: vijay2181
+      password: "{{ password2 }}"
+
+
+  - name: Push to docker hub
+    docker_image:
+      name: springboot
+      repository: vijay2181/springboot:1.0
+      push: yes
+      source: local
+
